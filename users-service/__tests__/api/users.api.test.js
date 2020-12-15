@@ -61,4 +61,64 @@ describe('users controller', () => {
         });
 
     });
+    describe('GET /v1/users', () => {
+        it('gets all users (without parameters)', async () => {
+            const options = {
+                method: 'GET',
+                url: '/api/users',
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(200);
+            expect(response.result.count).toBe(100);
+            expect(response.result.users).toHaveLength(100);
+            expect(response.result.users).toEqual(await usersService.getAll());
+        });
+
+        it('gets page 1 of all users', async () => {
+            const limit = 10;
+            const offset = 10;
+            const expected = await usersService.getAll({
+                offset,
+                limit
+            });
+            const options = {
+                method: 'GET',
+                url: `/api/users?offset=${offset}&limit=${limit}`,
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(200);
+            expect(response.result.count).toBe(limit);
+            expect(response.result.users).toHaveLength(limit);
+            expect(response.result.users).toEqual(expected);
+        });
+
+        it('gets page 2 of all users', async () => {
+            const limit = 10;
+            const offset = 20;
+            const expected = await usersService.getAll({
+                offset,
+                limit
+            });
+            const options = {
+                method: 'GET',
+                url: `/api/users?offset=${offset}&limit=${limit}`,
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(200);
+            expect(response.result.users).toHaveLength(limit);
+            expect(response.result.users).toEqual(expected);
+        });
+
+        it('returns empty response if no users', async () => {
+            const options = {
+                method: 'GET',
+                url: '/api/users?offset=9999',
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(200);
+            expect(response.result.count).toBe(0);
+            expect(response.result.users).toHaveLength(0);
+        });
+
+    });
 });

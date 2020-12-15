@@ -26,6 +26,12 @@ module.exports = {
                     throw new Error(ex.message);
                 }
             },
+            async getAll({
+                offset = 0,
+                limit = 100
+            } = {}) {
+                return await User.find({}).skip(offset).limit(limit);
+            },
            
         };
     },

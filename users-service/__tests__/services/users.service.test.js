@@ -66,4 +66,58 @@ describe('users service', () => {
             await expect(usersService.createUser(user)).rejects.toThrow('User validation failed: mobile: Path `mobile` is required., lastname: Path `lastname` is required., firstname: Path `firstname` is required.');
         });
     });
+    describe('getAll', () => {
+        beforeAll(async () => {
+            await setupUsers(User);
+        });
+
+        it('should get all users (without parameters)', async () => {
+            const databaseUsers = await User.find().limit(100);
+            const users = await usersService.getAll();
+            expect(users).toHaveLength(databaseUsers.length);
+            expect(users).toEqual(databaseUsers);
+        });
+
+        it('should get page 1 of all users', async () => {
+            const offset = 0;
+            const limit = 10;
+            await User.deleteMany({});
+            await setupUsers(User, 25);
+            const databaseUsers = await User.find().limit(limit);
+            const users = await usersService.getAll({
+                offset,
+                limit
+            });
+            expect(users).toHaveLength(databaseUsers.length);
+            expect(users).toEqual(databaseUsers);
+        });
+
+        it('should get page 2 of all users', async () => {
+            const offset = 20;
+            const limit = 10;
+            const databaseUsers = await User.find()
+                .skip(offset)
+                .limit(limit)
+            const users = await usersService.getAll({
+                offset,
+                limit
+            });
+            expect(users).toHaveLength(databaseUsers.length);
+            expect(users).toEqual(databaseUsers);
+        });
+
+        it('should get an incomplete page 3 of all (25) users', async () => {
+            const offset = 20;
+            const limit = 10;
+            const databaseUsers = await User.find()
+                .skip(offset)
+                .limit(limit)
+            const users = await usersService.getAll({
+                offset,
+                limit
+            });
+            expect(users).toHaveLength(5);
+            expect(users).toEqual(databaseUsers);
+        });
+    });
 });

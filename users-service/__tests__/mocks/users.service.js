@@ -9,7 +9,7 @@ function createUsersService() {
         max: 150
     }))
         .fill()
-        .map((v, i) => createRandomUser({}));
+        .map(() => createRandomUser({}));
     return {
         createUser(user) {
             for (let i = 0; i < users.length; i++) {
@@ -22,6 +22,15 @@ function createUsersService() {
             const newUser = createRandomUser(user);
             users.push(newUser);
             return users[users.length - 1];
+        },
+        getAll({
+            offset = 0,
+            limit = 100
+        } = {}) {
+            return Promise.resolve(users.slice(
+                offset,
+                offset + limit,
+            ));
         }
     };
 }

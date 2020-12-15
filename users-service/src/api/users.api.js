@@ -33,5 +33,47 @@ module.exports = (server, prefix) => {
             
         },
     },
+    {
+        method: 'GET',
+        path: '/users',
+        config: {
+            description: 'Get all users',
+            tags: ['api', 'users'],
+            handler: usersController.getAll,
+            validate: {
+                query: Joi.object({
+                    limit: Joi.number()
+                        .description('max number of items to fetch'),
+                    offset: Joi.number()
+                        .description('number of items to skip'),
+                }),
+            },
+            plugins: {
+                'hapi-swagger': {
+                    id: 'users',
+                    responses: {
+                        200: {
+                            description: 'Should return status 200',
+                            schema: Joi.object({
+                                count: Joi.number().required().example(1),
+                                users:Joi.array().items({
+                                    _id: Joi.string().required().example('5fb55fd471da0f122d564e7a'),
+                                    email: Joi.string().required().example('t@w.v'),
+                                    lastname: Joi.string().required().example('Samu'),
+                                    firstname: Joi.string().required().example('Alajo'),
+                                    mobile: Joi.string().required().example('+23470050005005'),
+                                    updatedAt: Joi.string().required().example('2020-11-18T17:54:28.209Z'),
+                                    createdAt: Joi.string().required().example('2020-11-18T17:54:28.209Z')
+                                })
+                            }).label('User'),
+
+                        },
+
+                        
+                    },
+                },
+            },
+        },
+    },
     ]);
 };
