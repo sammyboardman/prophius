@@ -54,9 +54,6 @@ describe('users service', () => {
             const response = await usersService.createUser(databaseUsers[0]);
             expect(response.error).toEqual(constants.UserExist);
         });
-    });
-
-    describe('throw error trying to insert wrong user payload', () => {
         it('should throw error', async () => {
             const user = {
                 email: 'pppp'
@@ -64,6 +61,7 @@ describe('users service', () => {
             await expect(usersService.createUser(user)).rejects.toThrow('User validation failed: mobile: Path `mobile` is required., lastname: Path `lastname` is required., firstname: Path `firstname` is required.');
         });
     });
+
     describe('getAll', () => {
         beforeAll(async () => {
             await setupUsers(User);
@@ -117,18 +115,18 @@ describe('users service', () => {
             expect(users).toHaveLength(5);
             expect(users).toEqual(databaseUsers);
         });
-        describe('getuserById', () => {
-            it('should get a single user by id', async () => {
-                await setupUsers(User, 10);
-                const databaseUser = await User.findOne();
-                const user = await usersService.getUserById(databaseUser._id.toString());
-                expect(user).toEqual(databaseUser);
-            });
-    
-            it('should throw resource not found error if no such user', async () => {
-                const response = await usersService.getUserById(faker.random.alphaNumeric(12));
-                expect(response.error).toBe(constants.UserNotFound);
-            });
+    });
+    describe('getuserById', () => {
+        it('should get a single user by id', async () => {
+            await setupUsers(User, 10);
+            const databaseUser = await User.findOne();
+            const user = await usersService.getUserById(databaseUser._id);
+            expect(user).toEqual(databaseUser);
+        });
+
+        it('should throw resource not found error if no such user', async () => {
+            const response = await usersService.getUserById(faker.random.alphaNumeric(12));
+            expect(response.error).toBe(constants.UserNotFound);
         });
     });
     describe('update user', () => {
@@ -146,6 +144,21 @@ describe('users service', () => {
                 firstname: faker.lorem.word()
             }
             const response = await usersService.updateUser(user, '3890e27da02c23770bdb3e49');
+            expect(response.error).toEqual(constants.InvalidUser);
+        });
+    });
+
+    describe('delete user', () => {
+        it('should delete user', async () => {
+            const databaseUsers = await User.find().limit(1);
+            const response = await usersService.deleteUser(databaseUsers[0]._id);
+            const user = await usersService.getUserById(databaseUsers[0]._id);
+            expect(response.response).toEqual(constants.Success);
+            expect(user.error).toBe(constants.UserNotFound);
+
+        });
+        it('should return error if user is invalid', async () => {
+            const response = await usersService.deleteUser('3890e27da02c23770bdb3e49');
             expect(response.error).toEqual(constants.InvalidUser);
         });
     });

@@ -56,6 +56,26 @@ module.exports = {
                 }
             },
 
+            async deleteUser(userId) {
+                try {
+                    const userExist = await this.getUserById(userId);
+                    if (!userExist.error) {
+                        await User.deleteOne({
+                            _id: userId
+                        });
+                        return { response: constants.Success };
+                    }
+                    return { error: constants.InvalidUser };
+
+                } catch (ex) {
+                    logger.log({
+                        level: 'error',
+                        message: ex.message
+                    });
+                    throw new Error(ex.message);
+                }
+            },
+
         };
     },
 };

@@ -199,4 +199,38 @@ describe('users controller', () => {
         });
 
     });
+    describe('DELETE /api/users/{id}', () => {
+        it('gets a user by ID', async () => {
+            const [expected] = await usersService.getAll();
+            const options = {
+                method: 'DELETE',
+                url: `/api/user/${expected._id}`,
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(200);
+            expect(response.result.response).toEqual(constants.Success);
+        });
+
+        it('throws invalid request if the ID is invalid', async () => {
+            const options = {
+                method: 'DELETE',
+                url: '/api/user/123',
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(400);
+            expect(response.result.error).toBe('Bad Request');
+            expect(response.result.message).toBe('Invalid request params input');
+        });
+
+        it('throws 400 on invalid user', async () => {
+            const options = {
+                method: 'DELETE',
+                url: faker.fake('/api/user/{{random.alphaNumeric(24)}}'),
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(400);
+            expect(response.result.error).toBe('Bad Request');
+            expect(response.result.message).toBe(constants.InvalidUser);
+        });
+    });
 });

@@ -3,6 +3,7 @@ const constants = require('../../src/utils/constant');
 const {
     createRandomUser
 } = require('./users');
+const _ = require('lodash');
 
 function createUsersService() {
     const users = new Array(faker.random.number({
@@ -55,7 +56,23 @@ function createUsersService() {
             }
             if (selectedUser) {
                 return Object.assign(selectedUser, user);
+            }
+            return {
+                error: constants.InvalidUser
+            };
 
+        },
+        deleteUser(userId) {
+            let status = false;
+            for (let i = 0; i < users.length; i++) {
+                if (users[i]._id === userId) {
+                    status = true;
+                    break;
+                }
+            }
+            if (status) {
+                _.remove(users, function (user) { return user._id === userId; })
+                return { response: constants.Success };
             }
             return {
                 error: constants.InvalidUser

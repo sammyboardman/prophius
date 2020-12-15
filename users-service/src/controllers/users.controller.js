@@ -49,11 +49,19 @@ const updateUser = async (request) => {
         return error(400, response.error);
     }
     return response;
-
+}
+const deleteUser = async (request) => {
+    const userId = request.params.id;
+    const response = await request.server.app.services.users.deleteUser(userId);
+    if (response.error) {
+        return error(400, response.error);
+    }
+    return response;
 }
 module.exports = {
     createUser,
     getAll,
     getUser,
-    updateUser
+    updateUser,
+    deleteUser
 };

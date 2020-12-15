@@ -143,5 +143,40 @@ module.exports = (server, prefix) => {
 
             },
         },
+        {
+            method: 'DELETE',
+            path: '/user/{id}',
+            config: {
+                description: 'Delete user by ID',
+                tags: ['api', 'users'],
+                validate: {
+                    params: Joi.object({
+                        id: Joi.string()
+                            .required()
+                            .min(24)
+                            .max(24)
+                            .description('the id of the user to return'),
+                    })
+                },
+                handler: usersController.deleteUser,
+                plugins: {
+                    'hapi-swagger': {
+                        id: 'users',
+                        responses: {
+                            200: {
+                                description: 'Should return status 200',
+                                schema: Joi.object({
+                                    response: Joi.string().required().example('successful'),
+
+                                }).label('User'),
+
+                            },
+
+                        },
+                    },
+                },
+            },
+        },
     ]);
+
 };
