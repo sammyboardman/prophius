@@ -7,7 +7,13 @@
   "author": "",
   "scripts": {
     "start": "node src/index",
+    "docker:start": "docker-compose -f ../docker-compose.dev.yml up --build -d",
+    "docker:build": "docker image build .",
+    "docker:stop": "docker-compose -f ../docker-compose.dev.yml down",
+    "docker:tail": "docker-compose -f ../docker-compose.dev.yml logs -f prophius-notification-service",
+    "docker:watch": "docker-compose -f ../docker-compose.dev.yml -f ../docker-compose.watch.yml up || true",
     "lint": "eslint --ext js ",
+    "pretest": "npm run lint",
     "precommit": "npm run lint"
   },
   "dependencies": {

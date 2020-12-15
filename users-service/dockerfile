@@ -1,0 +1,11 @@
+FROM node:12-alpine 
+RUN mkdir -p /usr/src/app/prophius-users-service/
+WORKDIR /usr/src/app/prophius-users-service/
+COPY users-service/package.json users-service/docker-entrypoint.sh /usr/src/app/prophius-users-service/
+RUN npm install
+COPY ./users-service /usr/src/app/prophius-users-service/
+EXPOSE 5071
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
+CMD [ "docker-entrypoint.sh"]

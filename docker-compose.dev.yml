@@ -1,0 +1,81 @@
+version: '3'
+
+services:
+  prophius-users-service:
+    build:
+      context: .
+      dockerfile: users-service/dockerfile
+    image: prophius-users-service${TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+      - mongodb
+    links:
+      - rabbitmq
+      - mongodb
+      - prophius-notification-service
+    environment:
+      DEBUG: "${DEBUG}"
+      DB_URL: "mongodb://mongodb/prophius-docker"
+      RABBITMQ_URL: "amqp://rabbitmq"
+      SWAGGER_HOST: "localhost:80"
+      WAIT_HOSTS: "rabbitmq:5672, mongodb:27017"
+      WAIT_HOSTS_TIMEOUT: 300
+      WAIT_SLEEP_INTERVAL: 30
+      WAIT_HOST_CONNECT_TIMEOUT: 30
+    ports:
+      - "5071:5071"
+    volumes:
+      - .:/home/node/app/prophius-users-service
+      - node_modules:/home/node/app/prophius-users-service/node_modules
+    networks:
+      - app-network
+    command: sh -c "/wait && npm start"
+  
+  prophius-notification-service:
+    build:
+      context: .
+      dockerfile: notifications-service/dockerfile
+    image: prophius-notification-service${TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+    links:
+      - rabbitmq
+    environment:
+      DEBUG: "${DEBUG}"
+      RABBITMQ_URL: "amqp://rabbitmq"
+      WAIT_HOSTS: "rabbitmq:5672"
+      WAIT_HOSTS_TIMEOUT: 300
+      WAIT_SLEEP_INTERVAL: 30
+      WAIT_HOST_CONNECT_TIMEOUT: 30
+    ports:
+      - "5072:5072"
+    volumes:
+      - .:/home/node/app/prophius-notification-service
+      - node_modules:/home/node/app/prophius-notification-service/node_modules
+    networks:
+      - app-network
+    command: sh -c "/wait && npm start"
+    
+  mongodb:
+    image: mongo:4.1.8-xenial
+    restart: unless-stopped
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - app-network
+
+  rabbitmq: 
+    image: rabbitmq:3.7.4
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:

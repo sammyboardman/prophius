@@ -1,0 +1,11 @@
+FROM node:12-alpine 
+RUN mkdir -p /usr/src/app/prophius-notification-service
+WORKDIR /usr/src/app/prophius-notification-service
+COPY notifications-service/package.json notifications-service/docker-entrypoint.sh /usr/src/app/prophius-notification-service/
+RUN npm install
+COPY ./notifications-service /usr/src/app/prophius-notification-service
+EXPOSE 5072
+ENV WAIT_VERSION 2.7.2
+ADD https://github.com/ufoscout/docker-compose-wait/releases/download/$WAIT_VERSION/wait /wait
+RUN chmod +x /wait
+CMD [ "docker-entrypoint.sh"]

@@ -1,0 +1,7 @@
+version: "3"
+services:
+  prophius:
+    volumes:
+      - ${PWD}:/home/node/app
+    environment:
+      WATCH: "true"
