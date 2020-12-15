@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  prophius-users-service:
+    build:
+      context: .
+      dockerfile: users-service/dockerfile
+    image: prophius-users-service${TAG:-latest}
+    restart: unless-stopped
+    depends_on:
+      - rabbitmq
+      - mongodb
+    links:
+      - rabbitmq
+      - mongodb
+    environment:
+      DEBUG: "${DEBUG}"
+      DB_URL: "mongodb://mongodb/prophius-test"
+      RABBITMQ_URL: "amqp://rabbitmq"
+      WAIT_HOSTS: "rabbitmq:5672, mongodb:27017"
+      WAIT_HOSTS_TIMEOUT: 300
+      WAIT_SLEEP_INTERVAL: 30
+      WAIT_HOST_CONNECT_TIMEOUT: 30
+    ports:
+      - "5076:5076"
+    volumes:
+      - .:/home/node/app/prophius-users-service
+      - node_modules:/home/node/app/prophius-users-service/node_modules
+    networks:
+      - app-network
+    command: sh -c "/wait && npm test"
+  
+  mongodb:
+    image: mongo:4.1.8-xenial
+    restart: unless-stopped
+    volumes:
+      - dbdata:/data/db
+    networks:
+      - app-network
+
+  rabbitmq: 
+    image: rabbitmq:3.7.4
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules:
