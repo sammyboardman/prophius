@@ -3,6 +3,7 @@ const {
 } = require('../models');
 const constants = require('../utils/constant');
 const { logger } = require('../lib/logger');
+const { constant } = require('lodash');
 module.exports = {
     createUsersService() {
         const User = models.User;
@@ -32,7 +33,16 @@ module.exports = {
             } = {}) {
                 return await User.find({}).skip(offset).limit(limit);
             },
-           
+            async getUserById(userId) {
+                const user = await User.findById(userId);
+                if (!user) {
+                    return {
+                        error: constants.UserNotFound,
+                    };
+                }
+                return user;
+            },
+
         };
     },
 };

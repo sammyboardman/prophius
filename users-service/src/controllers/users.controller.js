@@ -1,12 +1,13 @@
 const {
     error
 } = require('../lib/errors');
+const { constant } = require('lodash');
 
 const createUser = async (request, resp) => {
     const user = request.payload;
     const response = await request.server.app.services.users.createUser(user);
     if (response.error) {
-        return error(400, 'User Exist');
+        return error(400, response.error);
     }
     return response;
 
@@ -26,7 +27,18 @@ const getAll = async (request) => {
     };
     return response;
 };
+
+const getUser = async (request, resp) => {
+    const userID = request.params.id;
+    const value = await request.server.app.services.users.getUserById(userID);
+    if (value.error) {
+        return error(404, value.error);
+    }
+    return value;
+
+};
 module.exports = {
     createUser,
-    getAll
+    getAll,
+    getUser
 };

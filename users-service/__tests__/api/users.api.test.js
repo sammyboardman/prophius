@@ -5,7 +5,7 @@ const {
 const {
     startServer
 } = require('../../src/app');
-
+const constants = require('../../src/utils/constant');
 describe('users controller', () => {
     let server;
     let usersService;
@@ -57,11 +57,11 @@ describe('users controller', () => {
 
             const response = await server.inject(options);
             expect(response.statusCode).toBe(400);
-            expect(response.result.message).toEqual("User Exist");
+            expect(response.result.message).toEqual(constants.UserExist);
         });
 
     });
-    describe('GET /v1/users', () => {
+    describe('GET /api/users', () => {
         it('gets all users (without parameters)', async () => {
             const options = {
                 method: 'GET',
@@ -120,5 +120,39 @@ describe('users controller', () => {
             expect(response.result.users).toHaveLength(0);
         });
 
+    });
+    describe('GET /api/users/{id}', () => {
+        it('gets a user by ID', async () => {
+            const [expected] = await usersService.getAll();
+            const options = {
+                method: 'GET',
+                url: `/api/user/${expected._id}`,
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(200);
+            expect(response.result).toEqual(expected);
+        });
+
+        it('throws invalid request if the ID is invalid', async () => {
+            const options = {
+                method: 'GET',
+                url: '/api/user/123',
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(400);
+            expect(response.result.error).toBe('Bad Request');
+            expect(response.result.message).toBe('Invalid request params input');
+        });
+
+        it('throws 404 on missing user', async () => {
+            const options = {
+                method: 'GET',
+                url: faker.fake('/api/user/{{random.alphaNumeric(24)}}'),
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(404);
+            expect(response.result.error).toBe('Not Found');
+            expect(response.result.message).toBe(constants.UserNotFound);
+        });
     });
 });

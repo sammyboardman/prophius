@@ -1,12 +1,12 @@
 const faker = require('faker');
-const Errors = require('../../src/lib/errors');
 
 const {
     createRandomUser
 } = require('../mocks/users');
 const {
     initDB
-} = require('../../src/utils/database')
+} = require('../../src/utils/database');
+const constants = require('../../src/utils/constant');
 
 async function setupUsers(
     User,
@@ -54,7 +54,7 @@ describe('users service', () => {
             await setupUsers(User, 1);
             const databaseUsers = await User.find().limit(1);
             const response = await usersService.createUser(databaseUsers[0]);
-            expect(response.error).toEqual("User Exist");
+            expect(response.error).toEqual(constants.UserExist);
         });
     });
 
@@ -118,6 +118,19 @@ describe('users service', () => {
             });
             expect(users).toHaveLength(5);
             expect(users).toEqual(databaseUsers);
+        });
+        describe('getuserById', () => {
+            it('should get a single user by id', async () => {
+                await setupUsers(User, 10);
+                const databaseUser = await User.findOne();
+                const user = await usersService.getUserById(databaseUser._id.toString());
+                expect(user).toEqual(databaseUser);
+            });
+    
+            it('should throw resource not found error if no such user', async () => {
+                const response = await usersService.getUserById(faker.random.alphaNumeric(12));
+                expect(response.error).toBe(constants.UserNotFound);
+            });
         });
     });
 });

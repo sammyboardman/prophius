@@ -1,4 +1,5 @@
 const faker = require('faker');
+const constants = require('../../src/utils/constant');
 const {
     createRandomUser
 } = require('./users');
@@ -15,7 +16,7 @@ function createUsersService() {
             for (let i = 0; i < users.length; i++) {
                 if (users[i].email === user.email) {
                     return {
-                        error: "User Exist"
+                        error: constants.UserExist
                     }
                 }
             }
@@ -31,7 +32,16 @@ function createUsersService() {
                 offset,
                 offset + limit,
             ));
-        }
+        },
+        getUserById(userID) {
+            const user = users.filter((user) => user._id === userID)[0];
+            if (!user) {
+                return {
+                    error: constants.UserNotFound
+                };
+            }
+            return user;
+        },
     };
 }
 
