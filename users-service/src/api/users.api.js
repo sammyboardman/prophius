@@ -24,12 +24,36 @@ module.exports = (server, prefix) => {
                             .required()
                             .description('user last name'),
                         mobile: Joi.string()
-                            .required()
+                            .required().example('+2347069671335')
                             .description('user mobile phone'),
                     }),
                 },
                 handler: usersController.createUser,
+                plugins: {
+                    'hapi-swagger': {
+                        id: 'create-users',
+                        responses: {
+                            200: {
+                                description: 'Should return status 200',
+                                schema: Joi.object({
+                                    _id: Joi.string().required().example('5fb55fd471da0f122d564e7a'),
+                                    email: Joi.string().required().example('t@w.v'),
+                                    firstname: Joi.string().required().example('Samu'),
+                                    lastname: Joi.string().required().example('Felix'),
+                                    nationalFormat: Joi.string().required().example('0804 756 1407'),
+                                    internationalFormat: Joi.string().required().example('+234 804 756 1407'),
+                                    countryCode: Joi.string().required().example('NG'),
+                                    updatedAt: Joi.string().required().example('2020-11-18T17:54:28.209Z'),
+                                    createdAt: Joi.string().required().example('2020-11-18T17:54:28.209Z')
 
+                                }).label('User'),
+
+                            },
+
+
+                        },
+                    },
+                },
 
             },
         },
@@ -93,15 +117,18 @@ module.exports = (server, prefix) => {
                 handler: usersController.getUser,
                 plugins: {
                     'hapi-swagger': {
-                        id: 'users',
+                        id: 'user',
                         responses: {
                             200: {
                                 description: 'Should return status 200',
                                 schema: Joi.object({
                                     _id: Joi.string().required().example('5fb55fd471da0f122d564e7a'),
                                     email: Joi.string().required().example('t@w.v'),
-                                    name: Joi.string().required().example('Samu'),
-                                    role: Joi.string().required().example('admin'),
+                                    firstname: Joi.string().required().example('Samu'),
+                                    lastname: Joi.string().required().example('Felix'),
+                                    nationalFormat: Joi.string().required().example('0804 756 1407'),
+                                    internationalFormat: Joi.string().required().example('+234 804 756 1407'),
+                                    countryCode: Joi.string().required().example('NG'),
                                     updatedAt: Joi.string().required().example('2020-11-18T17:54:28.209Z'),
                                     createdAt: Joi.string().required().example('2020-11-18T17:54:28.209Z')
 
@@ -134,12 +161,36 @@ module.exports = (server, prefix) => {
                             .description('user first name'),
                         lastname: Joi.string()
                             .description('user last name'),
-                        mobile: Joi.string()
+                        mobile: Joi.string().example('+2347069671335')
                             .description('user mobile phone'),
                     }),
                 },
                 handler: usersController.updateUser,
+                plugins: {
+                    'hapi-swagger': {
+                        id: 'update-user',
+                        responses: {
+                            200: {
+                                description: 'Should return status 200',
+                                schema: Joi.object({
+                                    _id: Joi.string().required().example('5fb55fd471da0f122d564e7a'),
+                                    email: Joi.string().required().example('t@w.v'),
+                                    firstname: Joi.string().required().example('Samu'),
+                                    lastname: Joi.string().required().example('Felix'),
+                                    nationalFormat: Joi.string().required().example('0804 756 1407'),
+                                    internationalFormat: Joi.string().required().example('+234 804 756 1407'),
+                                    countryCode: Joi.string().required().example('NG'),
+                                    updatedAt: Joi.string().required().example('2020-11-18T17:54:28.209Z'),
+                                    createdAt: Joi.string().required().example('2020-11-18T17:54:28.209Z')
 
+                                }).label('User'),
+
+                            },
+
+
+                        },
+                    },
+                },
 
             },
         },
@@ -161,7 +212,7 @@ module.exports = (server, prefix) => {
                 handler: usersController.deleteUser,
                 plugins: {
                     'hapi-swagger': {
-                        id: 'users',
+                        id: 'delete-user',
                         responses: {
                             200: {
                                 description: 'Should return status 200',
