@@ -3,7 +3,7 @@ const {
 } = require('../models');
 const constants = require('../utils/constant');
 const { logger } = require('../lib/logger');
-const { constant } = require('lodash');
+const { producer } = require('../utils/queue')
 module.exports = {
     createUsersService() {
         const User = models.User;
@@ -14,7 +14,9 @@ module.exports = {
                         email: user.email
                     });
                     if (!userExist) {
-                        return await User.create(user);
+                        const newUser = await User.create(user);
+                        producer(constants.CreateUserQueue, newUser);
+                        return newUser;
                     }
                     return {
                         error: constants.UserExist
@@ -63,6 +65,7 @@ module.exports = {
                         await User.deleteOne({
                             _id: userId
                         });
+                        producer(constants.DeleteUserQueue, userExist);
                         return { response: constants.Success };
                     }
                     return { error: constants.InvalidUser };

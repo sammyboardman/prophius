@@ -20,7 +20,6 @@ async function setup() {
             level: 'error',
             message: `Failed to start server::::::::${error}`
         });
-        console.log(error);
         process.exit(1);
     }
 }

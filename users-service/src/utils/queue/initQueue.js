@@ -20,9 +20,8 @@ class MessageBroker {
         if (!this.connection) {
             await this.init();
         }
-        const message = new Buffer.from(msg);
         await this.channel.assertQueue(queue, { durable: true });
-        this.channel.sendToQueue(queue, message)
+        this.channel.sendToQueue(queue,  Buffer.from(JSON.stringify(msg)))
     }
 
     async subscribe(queue, handler) {

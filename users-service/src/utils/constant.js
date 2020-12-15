@@ -3,5 +3,7 @@ module.exports = Object.freeze({
     UserNotFound: "User Not Found",
     InvalidUser: "Invalid User",
     EmptyPayload: "Payload Is Empty",
-    Success: 'Successful'
+    Success: 'Successful',
+    CreateUserQueue: 'CreateUserQueue',
+    DeleteUserQueue: 'DeleteUserQueue'
 });
