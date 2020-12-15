@@ -42,6 +42,19 @@ module.exports = {
                 }
                 return user;
             },
+            async updateUser(user, userId) {
+                const updatedUser = await User.findOneAndUpdate({
+                    _id: userId
+                }, user, {
+                    new: true
+                });
+                if (updatedUser) {
+                    return updatedUser;
+                }
+                return {
+                    error: constants.InvalidUser
+                }
+            },
 
         };
     },

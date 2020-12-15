@@ -155,4 +155,48 @@ describe('users controller', () => {
             expect(response.result.message).toBe(constants.UserNotFound);
         });
     });
+    describe('PATCH /api/user', () => {
+        it('update a user', async () => {
+            const [expected] = await usersService.getAll();
+            const user = {
+                firstname: faker.lorem.word(),
+                lastname: faker.lorem.word(),
+            }
+            const options = {
+                method: 'PATCH',
+                url: `/api/user/${expected._id}`,
+                payload: JSON.stringify(user)
+            };
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(200);
+            expect(response.result.firstname).toEqual(user.firstname);
+        });
+
+        it('throw error for invalid user', async () => {
+            const user = {
+                firstname: faker.lorem.word(),
+                lastname: faker.lorem.word(),
+            }
+            const options = {
+                method: 'PATCH',
+                url: faker.fake('/api/user/{{random.alphaNumeric(24)}}'),
+                payload: JSON.stringify(user)
+            };
+
+            const response = await server.inject(options);
+            expect(response.result.message).toEqual(constants.InvalidUser);
+        });
+        it('throw error for empty payload', async () => {
+            const [expected] = await usersService.getAll();
+            const user = { };
+            const options = {
+                method: 'PATCH',
+                url: `/api/user/${expected._id}`,
+                payload: JSON.stringify(user)
+            };
+            const response = await server.inject(options);
+            expect(response.result.message).toEqual(constants.EmptyPayload);
+        });
+
+    });
 });

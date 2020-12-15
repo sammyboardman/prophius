@@ -115,5 +115,33 @@ module.exports = (server, prefix) => {
                 },
             },
         },
+        {
+            method: 'PATCH',
+            path: '/user/{id}',
+            config: {
+                description: 'Update a user',
+                tags: ['api', 'users'],
+                validate: {
+                    params: Joi.object({
+                        id: Joi.string()
+                            .required()
+                            .min(24)
+                            .max(24)
+                            .description('the id of the user to return'),
+                    }),
+                    payload: Joi.object({
+                        firstname: Joi.string()
+                            .description('user first name'),
+                        lastname: Joi.string()
+                            .description('user last name'),
+                        mobile: Joi.string()
+                            .description('user mobile phone'),
+                    }),
+                },
+                handler: usersController.updateUser,
+
+
+            },
+        },
     ]);
 };

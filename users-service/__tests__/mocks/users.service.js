@@ -42,6 +42,26 @@ function createUsersService() {
             }
             return user;
         },
+        updateUser(user, userId) {
+            let selectedUser;
+            if (Object.keys(user).length === 0 && user.constructor === Object) {
+                return constants.EmptyPayload;
+            }
+            for (let i = 0; i < users.length; i++) {
+                if (users[i]._id === userId) {
+                    selectedUser = users[i];
+                    break;
+                }
+            }
+            if (selectedUser) {
+                return Object.assign(selectedUser, user);
+
+            }
+            return {
+                error: constants.InvalidUser
+            };
+
+        },
     };
 }
 

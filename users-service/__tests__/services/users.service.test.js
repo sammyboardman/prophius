@@ -48,8 +48,6 @@ describe('users service', () => {
             const insertedUser = await User.findById(newUser._id);
             expect(insertedUser.email).toEqual(user.email);
         });
-    });
-    describe('insertuser', () => {
         it('should return error', async () => {
             await setupUsers(User, 1);
             const databaseUsers = await User.find().limit(1);
@@ -131,6 +129,24 @@ describe('users service', () => {
                 const response = await usersService.getUserById(faker.random.alphaNumeric(12));
                 expect(response.error).toBe(constants.UserNotFound);
             });
+        });
+    });
+    describe('update user', () => {
+        it('should update user', async () => {
+            const user = {
+                firstname: faker.lorem.word()
+            }
+            const databaseUsers = await User.find().limit(1);
+            const updatedUser = await usersService.updateUser(user, databaseUsers[0]._id);
+            expect(updatedUser.firstname).toEqual(user.firstname);
+        });
+        it('should return error if user is invalid', async () => {
+            await setupUsers(User, 1);
+            const user = {
+                firstname: faker.lorem.word()
+            }
+            const response = await usersService.updateUser(user, '3890e27da02c23770bdb3e49');
+            expect(response.error).toEqual(constants.InvalidUser);
         });
     });
 });

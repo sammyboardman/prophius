@@ -1,7 +1,7 @@
 const {
     error
 } = require('../lib/errors');
-const { constant } = require('lodash');
+const constants = require('../utils/constant');
 
 const createUser = async (request, resp) => {
     const user = request.payload;
@@ -37,8 +37,23 @@ const getUser = async (request, resp) => {
     return value;
 
 };
+
+const updateUser = async (request) => {
+    const user = request.payload;
+    if(Object.keys(user).length === 0 && user.constructor === Object){
+        return error(400, constants.EmptyPayload);
+    }
+    const userId = request.params.id;
+    const response = await request.server.app.services.users.updateUser(user, userId);
+    if (response.error) {
+        return error(400, response.error);
+    }
+    return response;
+
+}
 module.exports = {
     createUser,
     getAll,
-    getUser
+    getUser,
+    updateUser
 };
