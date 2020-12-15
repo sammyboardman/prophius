@@ -1,0 +1,64 @@
+{
+  "name": "users-service",
+  "version": "1.0.0",
+  "description": "handles users registration",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index",
+    "test": "export NODE_ENV=test && jest --runInBand --coverage",
+    "test:coverage": "npm test -- --coverageReporters=text"
+  },
+  "author": "Samuel Anjorin",
+  "dependencies": {
+    "@hapi/boom": "^9.1.0",
+    "@hapi/hapi": "^20.0.2",
+    "@hapi/inert": "^6.0.3",
+    "@hapi/vision": "^6.0.1",
+    "amqplib": "^0.6.0",
+    "bluebird": "^3.7.2",
+    "cls-hooked": "^4.2.2",
+    "config": "^1.28.1",
+    "hapi-swagger": "^14.0.0",
+    "hapijs-namespace": "^1.0.4",
+    "joi": "^17.3.0",
+    "lodash": "^4.17.20",
+    "mongodb": "^2.2.33",
+    "mongoose": "^5.10.14",
+    "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "^18.2.1",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "faker": "^4.1.0",
+    "husky": "^4.2.3",
+    "jest": "^25.2.4"
+  },
+  "jest": {
+    "verbose": true,
+    "testPathIgnorePatterns": [
+      "/__tests__/mocks/",
+      "/__tests__/setup.js",
+      "/config"
+    ],
+    "setupFilesAfterEnv": [
+      "./__tests__/setup.js"
+    ],
+    "transform": {},
+    "collectCoverage": false,
+    "coverageThreshold": {
+      "global": {
+        "branches": 100,
+        "functions": 100,
+        "lines": 100,
+        "statements": 100
+      }
+    },
+    "collectCoverageFrom": [
+      "**/src/**/*.js",
+      "!**/src/index.js",
+      "!**/src/app.js",
+      "!**/src/lib/service-factory.js"
+    ]
+  }
+}
