@@ -4,12 +4,12 @@ const {
 const {
     startServer
 } = require('./app');
-
+const { initDB } = require('./utils/database');
 async function setup() {
     try {
-       
-        const { createServices } = require('./services/service-factory');
         
+        await initDB();
+        const { createServices } = require('./services/service-factory');
         const services = createServices();
         
         await startServer({
