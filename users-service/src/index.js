@@ -7,7 +7,7 @@ const {
 const { initDB } = require('./utils/database');
 async function setup() {
     try {
-        
+
         await initDB();
         const { createServices } = require('./services/service-factory');
         const services = createServices();
@@ -20,6 +20,7 @@ async function setup() {
             level: 'error',
             message: `Failed to start server::::::::${error}`
         });
+        console.log(error);
         process.exit(1);
     }
 }

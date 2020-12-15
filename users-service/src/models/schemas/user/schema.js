@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 
 module.exports = new mongoose.Schema({
-    firstName: {
+    firstname: {
         type: String,
         required: true
     },
-    lastName: {
+    lastname: {
         type: String,
         required: true
     },

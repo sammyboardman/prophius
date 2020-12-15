@@ -1,4 +1,4 @@
-const Boom = require('boom')
+const Boom = require('@hapi/boom')
 const error = function (statusCode, message) {
     if (statusCode === 404) {
         return Boom.notFound(message);

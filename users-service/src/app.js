@@ -5,6 +5,7 @@ const Vision = require('@hapi/vision');
 const HapiSwagger = require('hapi-swagger');
 const { logger } = require('./lib/logger');
 const packageJson = require('../package.json');
+const { usersApi } = require('./api')
 
 async function startServer({ services, appPackage = packageJson } = {}) {
     const server = new Hapi.Server(JSON.parse(JSON.stringify(config.server.connection)));
@@ -29,7 +30,7 @@ async function startServer({ services, appPackage = packageJson } = {}) {
             },
         ]);
     }
-
+    usersApi(server, '/api');
     await server.start();
     logger.log({ level: 'info', message: `%s %s started on port ${server.info.port}` });
     

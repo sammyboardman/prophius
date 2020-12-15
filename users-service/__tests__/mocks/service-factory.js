@@ -1,6 +1,6 @@
 const {
-    createUsersService,
-} = require('./');
+    createUsersService
+} = require('./users.service');
 
 const createServices = () => ({
     users: createUsersService(),
