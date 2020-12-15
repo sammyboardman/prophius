@@ -48,11 +48,24 @@ describe('users service', () => {
             const insertedUser = await User.findById(newUser._id);
             expect(insertedUser.email).toEqual(user.email);
         });
-        it('should return error', async () => {
+        it('should return error if user exist', async () => {
             await setupUsers(User, 1);
             const databaseUsers = await User.find().limit(1);
             const response = await usersService.createUser(databaseUsers[0]);
             expect(response.error).toEqual(constants.UserExist);
+        });
+
+        it('should return error for duplicated mobile', async () => {
+            await setupUsers(User, 1);
+            const databaseUsers = await User.find().limit(1);
+            const newPayload = {
+                email: faker.internet.email(),
+                firstname: faker.lorem.word(),
+                lastname: faker.lorem.word(),
+                mobile: databaseUsers[0].mobile
+            }
+            const response = await usersService.createUser(newPayload);
+            expect(response.error).toEqual(constants.MobileAlreadyUsed);
         });
         it('should throw error', async () => {
             const user = {

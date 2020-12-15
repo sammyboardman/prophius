@@ -30,7 +30,7 @@ describe('users controller', () => {
                 email: 'test1@gmail.com',
                 firstname: faker.lorem.word(),
                 lastname: faker.lorem.word(),
-                mobile: faker.lorem.word(),
+                mobile: '+2347069671224',
             }
             const options = {
                 method: 'POST',
@@ -58,6 +58,24 @@ describe('users controller', () => {
             const response = await server.inject(options);
             expect(response.statusCode).toBe(400);
             expect(response.result.message).toEqual(constants.UserExist);
+        });
+
+        it('throw error for existing mobile', async () => {
+            const newUser = {
+                email:  faker.internet.email(),
+                firstname: faker.lorem.word(),
+                lastname: faker.lorem.word(),
+                mobile: '+2347069671224',
+            }
+            const options = {
+                method: 'POST',
+                url: '/api/user',
+                payload: JSON.stringify(newUser)
+            };
+
+            const response = await server.inject(options);
+            expect(response.statusCode).toBe(400);
+            expect(response.result.message).toEqual(constants.MobileAlreadyUsed);
         });
 
     });

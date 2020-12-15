@@ -5,5 +5,6 @@ module.exports = Object.freeze({
     EmptyPayload: "Payload Is Empty",
     Success: 'Successful',
     CreateUserQueue: 'CreateUserQueue',
-    DeleteUserQueue: 'DeleteUserQueue'
+    DeleteUserQueue: 'DeleteUserQueue',
+    MobileAlreadyUsed: 'Mobile Already Used'
 });

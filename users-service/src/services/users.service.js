@@ -13,7 +13,16 @@ module.exports = {
                     const userExist = await User.findOne({
                         email: user.email
                     });
+                    const mobileExist = await User.findOne({
+                        mobile: user.mobile
+                    });
+
                     if (!userExist) {
+                        if (mobileExist) {
+                            return {
+                                error: constants.MobileAlreadyUsed
+                            }
+                        }
                         const newUser = await User.create(user);
                         producer(constants.CreateUserQueue, newUser);
                         return newUser;

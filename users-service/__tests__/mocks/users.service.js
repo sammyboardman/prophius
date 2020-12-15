@@ -20,6 +20,11 @@ function createUsersService() {
                         error: constants.UserExist
                     }
                 }
+                if (users[i].mobile === user.mobile) {
+                    return {
+                        error: constants.MobileAlreadyUsed
+                    }
+                }
             }
             const newUser = createRandomUser(user);
             users.push(newUser);
