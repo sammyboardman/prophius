@@ -47,7 +47,7 @@ describe('users controller', () => {
                 email: 'test1@gmail.com',
                 firstname: faker.lorem.word(),
                 lastname: faker.lorem.word(),
-                mobile: faker.lorem.word(),
+                mobile: faker.phone.phoneNumber('+23465#######'),
             }
             const options = {
                 method: 'POST',

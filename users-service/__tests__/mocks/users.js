@@ -13,7 +13,7 @@ function createRandomUser(options) {
         email: faker.internet.email(),
         firstname: faker.lorem.word(),
         lastname: faker.lorem.word(),
-        mobile: faker.lorem.word(),
+        mobile: faker.phone.phoneNumber('+23480########'),
         ...options,
     };
 }

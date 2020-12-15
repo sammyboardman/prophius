@@ -11,15 +11,15 @@ const constants = require('../../src/utils/constant');
 async function setupUsers(
     User,
     count = faker.random.number({
-        min: 120,
-        max: 150
+        min: 30,
+        max: 35
     }),
 ) {
     const users = [...new Array(count)]
-        .map((v, i) => createRandomUser({
-            name: `user ${i}: ${faker.lorem.sentence()}`
-        }));
-    await User.insertMany(users);
+        .map(() => createRandomUser({}));
+     users.forEach(async user => {
+        await User.create(user);
+    });
 }
 
 describe('users service', () => {
@@ -58,6 +58,7 @@ describe('users service', () => {
         it('should return error for duplicated mobile', async () => {
             await setupUsers(User, 1);
             const databaseUsers = await User.find().limit(1);
+
             const newPayload = {
                 email: faker.internet.email(),
                 firstname: faker.lorem.word(),
@@ -67,21 +68,12 @@ describe('users service', () => {
             const response = await usersService.createUser(newPayload);
             expect(response.error).toEqual(constants.MobileAlreadyUsed);
         });
-        it('should throw error', async () => {
-            const user = {
-                email: 'pppp'
-            };
-            await expect(usersService.createUser(user)).rejects.toThrow('User validation failed: mobile: Path `mobile` is required., lastname: Path `lastname` is required., firstname: Path `firstname` is required.');
-        });
     });
 
     describe('getAll', () => {
-        beforeAll(async () => {
-            await setupUsers(User);
-        });
 
         it('should get all users (without parameters)', async () => {
-            const databaseUsers = await User.find().limit(100);
+            const databaseUsers = await User.find();
             const users = await usersService.getAll();
             expect(users).toHaveLength(databaseUsers.length);
             expect(users).toEqual(databaseUsers);
@@ -90,8 +82,6 @@ describe('users service', () => {
         it('should get page 1 of all users', async () => {
             const offset = 0;
             const limit = 10;
-            await User.deleteMany({});
-            await setupUsers(User, 25);
             const databaseUsers = await User.find().limit(limit);
             const users = await usersService.getAll({
                 offset,
@@ -125,13 +115,12 @@ describe('users service', () => {
                 offset,
                 limit
             });
-            expect(users).toHaveLength(5);
+            expect(users).toHaveLength(databaseUsers.length);
             expect(users).toEqual(databaseUsers);
         });
     });
     describe('getuserById', () => {
         it('should get a single user by id', async () => {
-            await setupUsers(User, 10);
             const databaseUser = await User.findOne();
             const user = await usersService.getUserById(databaseUser._id);
             expect(user).toEqual(databaseUser);

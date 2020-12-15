@@ -6,5 +6,6 @@ module.exports = Object.freeze({
     Success: 'Successful',
     CreateUserQueue: 'CreateUserQueue',
     DeleteUserQueue: 'DeleteUserQueue',
-    MobileAlreadyUsed: 'Mobile Already Used'
+    MobileAlreadyUsed: 'Mobile Already Used',
+    InvalidCountryCode: 'Invalid country calling code'
 });

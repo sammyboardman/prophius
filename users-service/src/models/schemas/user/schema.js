@@ -15,12 +15,5 @@ module.exports = new mongoose.Schema({
         index: {
             unique: true
         }
-    },
-    mobile: {
-        type: String,
-        required: true,
-        index: {
-            unique: true
-        }
-    },
+    }
 });
