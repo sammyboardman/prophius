@@ -4,7 +4,7 @@ A simple API server using HapiJs framework with the following properties
 - Queue Used: RabbitMQ
 - Mail Client: Mailgun
 
-- a model for users with the following structure
+a model for users with the following structure
   -- firstname
   -- lastname
   -- email
