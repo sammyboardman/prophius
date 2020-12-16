@@ -1,8 +1,8 @@
 # prophius
 A simple API server using HapiJs framework with the following properties
-Database Used: Mongo DB
-Queue Used: RabbitMQ
-Mail Client: Mailgun
+- Database Used: Mongo DB
+- Queue Used: RabbitMQ
+- Mail Client: Mailgun
 
 - a model for users with the following structure
   -- firstname
@@ -20,10 +20,11 @@ This project have 2 services:
  2. notifcations-service: handles notifications like email
 
 # Note
- To avoid getting 401 Unauthorised MailGUN StatusCode when trying to send Email
- - Add FROM_EMAIL [Here](https://github.com/sammyboardman/prophius/blob/master/docker-compose.dev.yml#L49) 
- - Add MAILGUN_API_KEY [Here](https://github.com/sammyboardman/prophius/blob/master/docker-compose.dev.yml#L50) 
- - Add DOMAIN [Here](https://github.com/sammyboardman/prophius/blob/master/docker-compose.dev.yml#L51) 
+   1. The services run on >= Node 12
+   2. To avoid getting 401 Unauthorised MailGUN StatusCode when trying to send Email
+       - Add FROM_EMAIL [Here](https://github.com/sammyboardman/prophius/blob/master/docker-compose.dev.yml#L49) 
+       - Add MAILGUN_API_KEY [Here](https://github.com/sammyboardman/prophius/blob/master/docker-compose.dev.yml#L50) 
+       - Add DOMAIN [Here](https://github.com/sammyboardman/prophius/blob/master/docker-compose.dev.yml#L51) 
 
  # Steps to start the services in Docker
   From the project root folder `cd users-service`
@@ -65,4 +66,3 @@ code coverage. To run the suite of tests, use the following command
 
     http://localhost:5071/documentation
     
-
