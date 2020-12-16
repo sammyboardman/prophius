@@ -16,8 +16,8 @@ Mail Client: Mailgun
 - 'DEL /api/user/:id' to delete the user from the database
 
 This project have 2 services:
- 1. users-Service: handles users registration
- 2. notifcation-service: handles notifications like email
+ 1. users-service: handles users registration
+ 2. notifcations-service: handles notifications like email
 
 # Note
  To avoid getting 401 Unauthorised MailGUN StatusCode when trying to send Email
@@ -35,9 +35,15 @@ This project have 2 services:
  #### Running the Service with Seed Data
 
     npm run docker:start:seed
-    
-#### Tailing the Log
 
+#### Tailing the User-Service Log
+
+    npm run docker:tail
+    
+#### Tailing the Notificaton-Service Log
+    From the project root folder:
+ 
+    cd notifications-service
     npm run docker:tail
 
 #### Running in Debug Mode
