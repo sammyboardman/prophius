@@ -18,7 +18,13 @@ Mail Client: Mailgun
 This project have 2 services:
  1. users-Service: handles users registration
  2. notifcation-service: handles notifications like email
- 
+
+# Note
+ To avoid getting 401 Unauthorised MailGUN StatusCode when trying to send Email
+ - Add FROM_EMAIL [Here](https://github.com/sammyboardman/prophius/blob/master/docker-compose.dev.yml#L49) 
+ - Add MAILGUN_API_KEY [Here](https://github.com/sammyboardman/prophius/blob/master/docker-compose.dev.yml#L50) 
+ - Add DOMAIN [Here](https://github.com/sammyboardman/prophius/blob/master/docker-compose.dev.yml#L51) 
+
  # Steps to start the services in Docker
   From the project root folder `cd users-service`
 
