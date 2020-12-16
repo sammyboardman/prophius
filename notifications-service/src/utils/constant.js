@@ -1,4 +1,6 @@
 module.exports = Object.freeze({
     CreateUserQueue: 'CreateUserQueue',
-    DeleteUserQueue: 'DeleteUserQueue'
+    DeleteUserQueue: 'DeleteUserQueue',
+    UserCreationSubject: 'Prophius registration was successful',
+    DeleteUserSubject: 'Prophius account have been deleted'
 });

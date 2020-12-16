@@ -46,6 +46,9 @@ services:
     environment:
       DEBUG: "${DEBUG}"
       RABBITMQ_URL: "amqp://rabbitmq"
+      FROM_EMAIL: "ADD_FROM_EMAIL_HERE"
+      MAILGUN_API_KEY: "ADD_MAILGUN_API_KEY_HERE"
+      DOMAIN: "ADD_DOMAIN_HERE"
       WAIT_HOSTS: "rabbitmq:5672"
       WAIT_HOSTS_TIMEOUT: 300
       WAIT_SLEEP_INTERVAL: 30

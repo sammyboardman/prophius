@@ -8,4 +8,11 @@ module.exports = {
             },
         },
     },
+    mail: {
+        from: 'ADD_FROM_EMAIL_HERE'
+    },
+    mailgun: {
+        api_key: 'ADD_MAILGUN_API_KEY_HERE',
+        domain: 'ADD_DOMAIN_HERE'
+    }
 };
