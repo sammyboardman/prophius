@@ -1,26 +1,12 @@
 const faker = require('faker');
-
 const {
     createRandomUser
-} = require('../mocks/users');
+} = require('../../src/utils/database/seed/usersdata');
 const {
     initDB
 } = require('../../src/utils/database');
 const constants = require('../../src/utils/constant');
-
-async function setupUsers(
-    User,
-    count = faker.random.number({
-        min: 30,
-        max: 35
-    }),
-) {
-    const users = [...new Array(count)]
-        .map(() => createRandomUser({}));
-     users.forEach(async user => {
-        await User.create(user);
-    });
-}
+const seed = require('../../src/utils/database/seed/index');
 
 describe('users service', () => {
     let usersService;
@@ -43,20 +29,18 @@ describe('users service', () => {
 
     describe('insertuser', () => {
         it('should insert user', async () => {
-            const user = createRandomUser();
+            const user = createRandomUser({ mobile: '+2347069671224' });
             const newUser = await usersService.createUser(user);
             const insertedUser = await User.findById(newUser._id);
             expect(insertedUser.email).toEqual(user.email);
         });
         it('should return error if user exist', async () => {
-            await setupUsers(User, 1);
             const databaseUsers = await User.find().limit(1);
             const response = await usersService.createUser(databaseUsers[0]);
             expect(response.error).toEqual(constants.UserExist);
         });
 
         it('should return error for duplicated mobile', async () => {
-            await setupUsers(User, 1);
             const databaseUsers = await User.find().limit(1);
 
             const newPayload = {
@@ -141,7 +125,7 @@ describe('users service', () => {
             expect(updatedUser.firstname).toEqual(user.firstname);
         });
         it('should return error if user is invalid', async () => {
-            await setupUsers(User, 1);
+            await seed(User, 1);
             const user = {
                 firstname: faker.lorem.word()
             }

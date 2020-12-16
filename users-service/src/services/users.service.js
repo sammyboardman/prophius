@@ -42,7 +42,6 @@ module.exports = {
                 offset = 0,
                 limit = 100
             } = {}) {
-                console.log('---------> I got here')
                 return await User.find({}).skip(offset).limit(limit);
             },
             async getUserById(userId) {

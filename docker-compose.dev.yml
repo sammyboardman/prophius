@@ -16,6 +16,7 @@ services:
       - prophius-notification-service
     environment:
       DEBUG: "${DEBUG}"
+      SEED: "${SEED}"
       DB_URL: "mongodb://mongodb/prophius-docker"
       RABBITMQ_URL: "amqp://rabbitmq"
       SWAGGER_HOST: "localhost:80"

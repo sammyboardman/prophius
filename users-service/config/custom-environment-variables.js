@@ -13,5 +13,6 @@ module.exports = {
     },
     rabbitMQ: {
         url: 'RABBITMQ_URL',
-    }
+    },
+    seed: 'SEED'
 };

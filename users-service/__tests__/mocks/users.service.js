@@ -2,7 +2,7 @@ const faker = require('faker');
 const constants = require('../../src/utils/constant');
 const {
     createRandomUser
-} = require('./users');
+} = require('../../src/utils/database/seed/usersdata');
 const _ = require('lodash');
 
 function createUsersService() {
